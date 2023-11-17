@@ -23,4 +23,4 @@ En la terminal mostrará la url donde se iniciará el servidor, por lo general e
 FastApi genera documentación de la API automáticamente, ingresar a http://127.0.0.1:8000/docs
 
 ## Recomendaciones
-Instalar la dependencia SQLite Viewer en Visual Studio Code para visualizar las tablas, y comprobar que los datos estén siendo registrados y manipulados correctamente.
+Instalar la extensión SQLite Viewer en Visual Studio Code para visualizar las tablas de la base de datos, y comprobar que los datos estén siendo registrados y manipulados correctamente.
