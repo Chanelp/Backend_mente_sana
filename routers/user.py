@@ -19,7 +19,6 @@ async def create_user(new_user: User) -> dict:
         UserService(db).register_user(new_user)
         return JSONResponse(content= {"message": "Usuario registrado exitosamente!"}, status_code= 201)
 
-
 @user_router.get(path="/login", tags = ["Auth"], response_model=dict, status_code= 200)
 def login(email:str, password:str):
     try:
@@ -35,7 +34,6 @@ def login(email:str, password:str):
         
         return JSONResponse(status_code=200, content={"message":"Inicio de sesión exitoso"})
     
-
 @user_router.get(path="/users", tags=["Users"], status_code=200, response_model=List[User])
 def get_all_users():
     try:
@@ -65,6 +63,22 @@ def get_one_user(id: int):
             return JSONResponse(status_code=404, content={"message":"Usuario no encontrado."})
         
         return JSONResponse(status_code=200, content=jsonable_encoder(user_searched))
+
+@user_router.put(path="/users/{id}", tags=["Users"], response_model=dict, status_code=200)
+def update_user(id: int, user: User):
+    try:
+        db = Session()
+    except HTTPException as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    
+    else:
+        user_to_update = UserService(db).get_user(id)
+
+        if not user_to_update:
+            return JSONResponse(status_code=404, content={"message":"Usuario no encontrado."})
+        
+        UserService(db).update_user_info(id, user)
+        return JSONResponse(status_code=200, content={"message":"Datos del usuario actualizados correctamente."})
 
 @user_router.delete(path="/login/{id}", tags=["Users"], response_model=dict, status_code=200)
 def delete_user(id: int):
