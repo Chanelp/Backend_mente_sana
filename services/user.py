@@ -18,3 +18,7 @@ class UserService:
     def delete_user(self, id: int):
         self.db.query(UserModel).filter(UserModel.id == id).delete()
         self.db.commit()
+
+    def get_all_users(self):
+        users = self.db.query(UserModel).all()
+        return users
