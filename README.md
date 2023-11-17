@@ -1,5 +1,5 @@
 ## Proyecto
-Mente Sana: este proyecto propone desarrollar una plataforma web de salud mental en línea que ofrezca a los usuarios servicios de terapia profesional, meditación y comunidad, todo en un solo lugar.
+Mente Sana: este proyecto propone desarrollar una plataforma web de salud mental en línea que ofrezca a los usuarios servicios de terapia profesional, meditación y comunidad, todo en un solo lugar.
 
 ## Descripción
 En este repositorio se encuentrará el código fuente de los servicios backend de la plataforma. 
