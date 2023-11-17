@@ -22,3 +22,7 @@ class UserService:
     def get_all_users(self):
         users = self.db.query(UserModel).all()
         return users
+    
+    def get_user(self, id: int):
+        user_searched = self.db.query(UserModel).filter(UserModel.id == id).first()
+        return user_searched

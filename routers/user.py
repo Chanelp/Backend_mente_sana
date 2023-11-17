@@ -18,7 +18,8 @@ async def create_user(new_user: User) -> dict:
     else:
         UserService(db).register_user(new_user)
         return JSONResponse(content= {"message": "Usuario registrado exitosamente!"}, status_code= 201)
-    
+
+
 @user_router.get(path="/login", tags = ["Auth"], response_model=dict, status_code= 200)
 def login(email:str, password:str):
     try:
@@ -50,6 +51,20 @@ def get_all_users():
         
         return JSONResponse(status_code=200, content=jsonable_encoder(all_users))
 
+@user_router.get(path="/users/{id}", tags=["Users"], response_model=User, status_code=200)
+def get_one_user(id: int):
+    try:
+        db = Session()
+    except HTTPException as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    
+    else:
+        user_searched = UserService(db).get_user(id)
+
+        if not user_searched:
+            return JSONResponse(status_code=404, content={"message":"Usuario no encontrado."})
+        
+        return JSONResponse(status_code=200, content=jsonable_encoder(user_searched))
 
 @user_router.delete(path="/login/{id}", tags=["Users"], response_model=dict, status_code=200)
 def delete_user(id: int):
