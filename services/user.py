@@ -14,3 +14,7 @@ class UserService:
     def login_user(self, email:str, password:str):
         user_searched = self.db.query(UserModel).filter(UserModel.email == email).one_or_none()
         return user_searched
+    
+    def delete_user(self, id: int):
+        self.db.query(UserModel).filter(UserModel.id == id).delete()
+        self.db.commit()

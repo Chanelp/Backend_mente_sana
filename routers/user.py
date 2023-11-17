@@ -31,3 +31,19 @@ def login(email:str, password:str):
             return JSONResponse(status_code=404, content={"message":"Usuario no encontrado"})
         
         return JSONResponse(status_code=200, content={"message":"Inicio de sesión exitoso"})
+    
+
+@user_router.delete(path="/login/{id}", tags=["Users"], response_model=dict, status_code=200)
+def delete_user(id: int):
+    try:
+        db = Session()
+    except HTTPException as e:
+        raise HTTPException(status_code= 500, detail=str(e))
+    
+    else:
+        user_delete = UserService(db).delete_user(id)
+
+        if not user_delete:
+            return JSONResponse(status_code=404, content={"message":"Usuario no encontrado"})
+        
+        return JSONResponse(status_code=200, content={"message":"Usuario eliminado correctamente!"})
