@@ -6,6 +6,7 @@ from datetime import datetime, date
 class User(BaseModel):
     id: Optional[int] = None
     name: str
+    last_name: str
     email: str
     password: str
     date_register: datetime | None = datetime.now()
@@ -17,6 +18,7 @@ class User(BaseModel):
         "json_schema_extra": {
             "examples": [{
                 "name": "Nombre del usuario",
+                "last_name": "Apellido del usuario",
                 "email": "Correo electrónico",
                 "password": "Contraseña",
                 "date_birth": "Fecha nacimiento 0000-00-00",
