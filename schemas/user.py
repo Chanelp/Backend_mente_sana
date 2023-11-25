@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from typing import Optional
 from datetime import datetime, date
+from typing import Union
 
 
 class User(BaseModel):
@@ -9,7 +10,7 @@ class User(BaseModel):
     last_name: str
     email: str
     password: str
-    date_register: datetime | None = datetime.now()
+    date_register: Union[datetime, None] = datetime.now()
     genre: str
     date_birth: date
     rol: str = "User"
