@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from config.database import Base, engine
 from routers.user import user_router
+import uvicorn
 
 app = FastAPI()
 app.title = "API para la plataforma de salud mental en línea."
