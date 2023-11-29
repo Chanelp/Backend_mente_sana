@@ -14,21 +14,9 @@ app.include_router(user_router)
 app.include_router(therapist_router)
 
 def init_db():
-    from models import user, therapy_patients, therarpist, therapy_session, statuses
+    from models import user, therarpist, therapy_session, statuses
     Base.metadata.create_all(bind = engine)
 
-    s = Session()
-    newUser = user.UserModel()
-    
-    newUser.name = "pedro mir"
-    newUser.last_name = "alberto gilberto"
-    newUser.email = "emailNoGris@gmail.com"
-    newUser.password = "sinHash"
-    newUser.genre = "masculino"
-
-    s.add(newUser)
-    
-    s.commit()
     print('database intialized :D')
 
 if __name__ == "__main__":

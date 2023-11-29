@@ -1,6 +1,5 @@
-from datetime import datetime
-from config.database import Base, createAt
-from sqlalchemy import Column, String, Integer, DateTime, Date
+from config.database import Base, createdDate
+from sqlalchemy import Column, String, Integer, DateTime
 
 class UserModel(Base):
     __tablename__ = "users"
@@ -11,9 +10,9 @@ class UserModel(Base):
     email = Column(String)
     password = Column(String)
     genre = Column(String)
-    date_birth = Column(Date)
+    date_birth = Column(DateTime)
     rol = Column(String)
     
-    createAt = createAt.copy()
+    createdDate = createdDate._clone()
 
 

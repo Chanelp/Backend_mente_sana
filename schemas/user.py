@@ -10,7 +10,7 @@ class User(BaseModel):
     last_name: str
     email: str
     password: str
-    date_register: Union[datetime, None] = datetime.now()
+    createdDate: Union[datetime, None] = datetime.now()
     genre: str
     date_birth: date
     rol: str = "User"

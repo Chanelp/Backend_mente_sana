@@ -3,6 +3,7 @@ from sqlalchemy import Column, String, Integer, ForeignKey, Date, Float
 
 from models.therarpist import TherapistModel
 from models.user import UserModel
+from models.statuses import StatusesModel
 
 class TherapySessionModel(Base):
     
@@ -13,6 +14,7 @@ class TherapySessionModel(Base):
     start_date = Column(Date, nullable=False)
     session_duration = Column(Float, nullable=True, default=None) ## Minutos (Mins)
     session_note = Column(String, nullable=False)
-    patient_id = Column(Integer, ForeignKey(UserModel.id))
+    patient_id = Column(Integer, ForeignKey(UserModel.id), nullable=False)
+    status_id = Column(Integer, ForeignKey(StatusesModel.id), nullable=False)
     
     createAt = createAt.copy()

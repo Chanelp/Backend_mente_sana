@@ -18,6 +18,7 @@ Base = declarative_base()
 
 # Default column to all tables
 createAt = Column(DateTime, nullable=False, default=datetime.now)
+createdDate = Column(DateTime, nullable=False, default=datetime.now)
 
 
 def addCreationDate(mapper, connect, target):

@@ -2,7 +2,7 @@ from config.database import Base, createAt
 from sqlalchemy import Column, String, Integer
 
 
-class statuses(Base):
+class StatusesModel(Base):
     __tablename__ = "statuses"
     
     id = Column(Integer, primary_key = True, autoincrement = True)

@@ -1,5 +1,7 @@
 from config.database import Base, createAt
-from sqlalchemy import Column, String, Integer
+from sqlalchemy import Column, String, Integer, ForeignKey
+
+from models.statuses import StatusesModel
 
 class TherapistModel(Base):
     
@@ -9,5 +11,6 @@ class TherapistModel(Base):
     professional_description = Column(String)
     specialty = Column(String)
     license = Column(String)
+    status_id = Column(Integer, ForeignKey(StatusesModel.id))
 
     createAt = createAt.copy()
