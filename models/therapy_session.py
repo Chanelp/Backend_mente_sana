@@ -1,7 +1,8 @@
-from config.database import Base
+from config.database import Base, createAt
 from sqlalchemy import Column, String, Integer, ForeignKey, Date, Float
 
 from models.therarpist import TherapistModel
+from models.user import UserModel
 
 class TherapySessionModel(Base):
     
@@ -10,6 +11,8 @@ class TherapySessionModel(Base):
     id = Column(Integer, primary_key = True, autoincrement = True)
     therapist_id = Column(Integer, ForeignKey(TherapistModel.id), nullable=False)
     start_date = Column(Date, nullable=False)
-    session_duration = Column(Float, nullable=False) ## Minutos (Mins)
+    session_duration = Column(Float, nullable=True, default=None) ## Minutos (Mins)
     session_note = Column(String, nullable=False)
+    patient_id = Column(Integer, ForeignKey(UserModel.id))
     
+    createAt = createAt.copy()
