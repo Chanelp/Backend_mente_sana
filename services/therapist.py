@@ -1,8 +1,8 @@
 from models.therarpist import TherapistModel
-from schemas.therapist import Therapist
+from sqlalchemy.orm import Session
 
 class TherapistService:
-    def __init__(self, db):
+    def __init__(self, db:Session):
         self.db = db
     
     def register_therapist(self, therapist):
@@ -11,5 +11,5 @@ class TherapistService:
         self.db.commit()
 
     def get_all_therapists(self):
-        therapists = self.db.query(TherapistModel).alll()
+        therapists = self.db.query(TherapistModel).all()
         return therapists

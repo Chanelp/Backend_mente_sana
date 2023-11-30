@@ -1,21 +1,24 @@
 from fastapi import FastAPI
-from config.database import Base, engine, Session
+from config.database import Base, engine
 from routers.user import user_router
 from routers.therapist import therapist_router
+from routers.therapy_session import therapy_router
 import uvicorn
 import os
 
-from datetime import datetime 
-
 app = FastAPI()
-app.title = "API para la plataforma de salud mental en línea."
+app.title = "API para la plataforma de salud ental en línea."
 
 app.include_router(user_router)
 app.include_router(therapist_router)
+app.include_router(therapy_router)
 
 def init_db():
     from models import user, therarpist, therapy_session, statuses
     Base.metadata.create_all(bind = engine)
+
+    # Create default data
+    statuses.StatusesModel.create_default_records()
 
     print('database intialized :D')
 

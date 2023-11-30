@@ -1,9 +1,10 @@
 from schemas.user import User
 from models.user import UserModel
+from sqlalchemy.orm import Session
 
 
 class UserService:
-    def __init__(self, db):
+    def __init__(self, db:Session):
         self.db = db
 
     def register_user(self, user):
