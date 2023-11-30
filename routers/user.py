@@ -6,6 +6,7 @@ from services.user import UserService
 from config.database import Session
 from typing import List
 
+
 user_router = APIRouter()
 
 @user_router.post(path= "/users", tags= ["Auth"], response_model= dict, status_code= 201)
@@ -16,7 +17,7 @@ async def create_user(new_user: User) -> dict:
         raise HTTPException(status_code = 500, detail = str(e))
     
     else:
-        UserService(db).register_user(new_user)
+        added_user = UserService(db).register_user(new_user)
         return JSONResponse(content= {"message": "Usuario registrado exitosamente!"}, status_code= 201)
 
 @user_router.get(path="/login", tags = ["Auth"], response_model=dict, status_code= 200)
@@ -27,12 +28,15 @@ def login(email:str, password:str):
         raise HTTPException(status_code= 500, detail= str(e))
     
     else:
-        user_login = UserService(db).login_user(email, password)
+        response = UserService(db).login_user(email, password)
 
-        if not user_login or user_login.password != password:
-            return JSONResponse(status_code=404, content={"message":"Usuario no encontrado"})
+        print(response['invalid'])
         
+        if bool(response["invalid"]):
+            return JSONResponse(status_code=404, content={"message":"Usuario o contraseña incorrecta"})
+
         return JSONResponse(status_code=200, content={"message":"Inicio de sesión exitoso"})
+        
     
 @user_router.get(path="/users", tags=["Users"], status_code=200, response_model=List[User])
 def get_all_users():
@@ -90,7 +94,7 @@ def delete_user(id: int):
     else:
         user_delete = UserService(db).delete_user(id)
 
-        if not user_delete:
+        if user_delete < 1:
             return JSONResponse(status_code=404, content={"message":"Usuario no encontrado"})
         
         return JSONResponse(status_code=200, content={"message":"Usuario eliminado correctamente!"})

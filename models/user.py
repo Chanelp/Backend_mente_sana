@@ -5,12 +5,12 @@ class UserModel(Base):
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    name = Column(String)
-    last_name = Column(String)
-    email = Column(String)
-    password = Column(String)
+    name = Column(String, nullable=False)
+    last_name = Column(String, nullable=False)
+    email = Column(String, nullable=False, unique=True)
+    password = Column(String, nullable=False)
     genre = Column(String)
-    date_birth = Column(DateTime)
+    date_birth = Column(DateTime, nullable=False)
     rol = Column(String)
     
     createdDate = createdDate._clone()

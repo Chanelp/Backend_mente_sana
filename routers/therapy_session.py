@@ -8,11 +8,11 @@ from typing import List
 therapy_router = APIRouter()
 
 
-@therapy_router.post(path='/therapy_sessions', tags=['Therapy session'], response_model=dict, status_code=200)
-def get_all_therapy_sessions() -> dict:
+@therapy_router.post(path='/therapy_sessions/{id}', tags=['Therapy session'], response_model=dict, status_code=200)
+def get_sesion_by_therapist(id:int) -> dict:
     try:
         service = TherapySessionServices(Session())
-        sesiones = service.getAllSessions()
+        sesiones = service.getSessionsByTherapist(id)
     except HTTPException as e:
         raise HTTPException(status_code = 500, detail = str(e))
 

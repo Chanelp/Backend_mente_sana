@@ -5,9 +5,9 @@ class TherapySessionServices:
     def __init__(self, db:Session) -> None:
         self.db = db
 
-    def getAllSessions(self) -> list:
+    def getSessionsByTherapist(self, id:int) -> list:
         try:
-            sesiones = self.db.query(TherapySessionModel).all()
+            sesiones = self.db.query(TherapySessionModel).filter(TherapySessionModel.id == id)
         except Exception:
             raise
 
