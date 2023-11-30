@@ -1,10 +1,13 @@
 from fastapi import FastAPI
 from config.database import Base, engine
+import uvicorn
+import os
+
+# Routers
 from routers.user import user_router
 from routers.therapist import therapist_router
 from routers.therapy_session import therapy_router
-import uvicorn
-import os
+from routers.auth import auth_router
 
 app = FastAPI()
 app.title = "API para la plataforma de salud ental en línea."
@@ -12,6 +15,7 @@ app.title = "API para la plataforma de salud ental en línea."
 app.include_router(user_router)
 app.include_router(therapist_router)
 app.include_router(therapy_router)
+app.include_router(auth_router)
 
 def init_db():
     from models import user, therarpist, therapy_session, statuses
