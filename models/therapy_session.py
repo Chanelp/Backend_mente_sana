@@ -12,7 +12,7 @@ class TherapySessionModel(Base):
     id = Column(Integer, primary_key = True, autoincrement = True)
     therapist_id = Column(Integer, ForeignKey(TherapistModel.id), nullable=False)
     start_date = Column(Date, nullable=False)
-    session_duration = Column(int, nullable=True, default=None) ## Minutos (Mins)
+    session_duration = Column(Integer, nullable=True, default=None) ## Minutos (Mins)
     session_note = Column(String, nullable=False)
     patient_id = Column(Integer, ForeignKey(UserModel.id), nullable=False)
     status_id = Column(Integer, ForeignKey(StatusesModel.id), nullable=False)

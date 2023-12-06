@@ -15,10 +15,8 @@ class UserService:
         # generate salt
         salt = bcrypt.gensalt()
         new_user.password = bcrypt.hashpw(new_user.password.encode('utf-8'), salt)
-
         self.db.add(new_user)
         self.db.commit()
-
         return new_user
 
     def login_user(self, email:str, password:str):

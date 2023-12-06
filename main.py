@@ -1,17 +1,24 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from fastapi.responses import JSONResponse
 from config.database import Base, engine
 import uvicorn
 import os
 
-# Routers
+# Routers import
 from routers.user import user_router
 from routers.therapist import therapist_router
 from routers.therapy_session import therapy_router
 from routers.auth import auth_router
 
+
+# jwt and env
+from dotenv import dotenv_values
+from jwt import decode
+
 app = FastAPI()
 app.title = "API para la plataforma de salud ental en línea."
 
+# routers
 app.include_router(user_router)
 app.include_router(therapist_router)
 app.include_router(therapy_router)

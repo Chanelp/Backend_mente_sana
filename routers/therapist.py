@@ -8,7 +8,7 @@ from typing import List
 
 therapist_router = APIRouter()
 
-@therapist_router.post(path= "/therapists", tags= ["Auth"], response_model= dict, status_code= 201)
+@therapist_router.post(path= "/therapists", tags= ["Therapists"], response_model= dict, status_code= 201)
 async def create_therapist(new_therapist: Therapist) -> dict:
     try:
         db = Session()
