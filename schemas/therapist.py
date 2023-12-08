@@ -4,7 +4,7 @@ from typing import Optional
 
 class Therapist(BaseModel):
     id: Optional[int] = None
-    userId: int
+    user_id: int
     professional_description: str
     specialty: str 
     license: str
