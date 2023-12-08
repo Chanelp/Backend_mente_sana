@@ -3,9 +3,11 @@ from jwt.exceptions import PyJWKError
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 
+from utils.env import read_env_key
+
 OauthScheme = OAuth2PasswordBearer(tokenUrl="token")
 
-SECRET = ''
+SECRET = read_env_key('encrypt_pass')
 
 def verify_JSON_web_token(token: str = Depends(OauthScheme)):
     credentials_exception = HTTPException(

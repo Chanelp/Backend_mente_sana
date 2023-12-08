@@ -29,12 +29,9 @@ def init_db():
     print('database intialized :D')
 
 if __name__ == "__main__":
-    from dotenv import dotenv_values
-    envConfig = dotenv_values()
+    import utils.env as env
     init_db()
-
-    print(envConfig['encrypt_pass'])
-
+    print(env.read_env_key('encrypt_pass'))
     uvicorn.run("main:app", host="0.0.0.0",
                 port=int(os.environ.get("PORT", 8000)))
     
