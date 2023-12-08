@@ -6,8 +6,7 @@ from config.database import Session
 import jwt
 from dotenv import dotenv_values
 
-
-envConfig = dotenv_values('vars.env')
+envConfig = dotenv_values('.env')
 
 auth_router = APIRouter(prefix='/auth')
 

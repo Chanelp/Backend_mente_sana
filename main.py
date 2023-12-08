@@ -1,5 +1,4 @@
-from fastapi import FastAPI, Request
-from fastapi.responses import JSONResponse
+from fastapi import FastAPI
 from config.database import Base, engine
 import uvicorn
 import os
@@ -10,10 +9,13 @@ from routers.therapist import therapist_router
 from routers.therapy_session import therapy_router
 from routers.auth import auth_router
 
+import json
 
 # jwt and env
-from dotenv import dotenv_values
+from dotenv import load_dotenv
 from jwt import decode
+
+
 
 app = FastAPI()
 app.title = "API para la plataforma de salud ental en línea."
@@ -34,7 +36,11 @@ def init_db():
     print('database intialized :D')
 
 if __name__ == "__main__":
+    import os
+    load_dotenv()
     init_db()
+
+    print(os.getenv('encrypt_pass'))
     uvicorn.run("main:app", host="0.0.0.0",
                 port=int(os.environ.get("PORT", 8000)))
     
