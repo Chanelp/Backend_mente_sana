@@ -8,6 +8,7 @@ class Therapist(BaseModel):
     professional_description: str
     specialty: str 
     license: str
+    status_id: Optional[int] = 2
 
     model_config = {
         "json_schema_extra": {
