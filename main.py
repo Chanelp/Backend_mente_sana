@@ -11,7 +11,7 @@ from routers.auth import auth_router
 
 # env variables
 from dotenv import dotenv_values
-VENV = dotenv_values('.env')['encrypt_pass']
+VENV = dotenv_values()['encrypt_pass']
 
 
 app = FastAPI()
