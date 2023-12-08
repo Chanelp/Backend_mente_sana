@@ -10,8 +10,8 @@ from routers.therapy_session import therapy_router
 from routers.auth import auth_router
 
 # env variables
-from dotenv import dotenv_values
-VENV = dotenv_values()['encrypt_pass']
+import os
+SECRET = os.getenv('encrypt_pass')
 
 
 app = FastAPI()
