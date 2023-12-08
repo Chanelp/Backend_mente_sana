@@ -9,10 +9,6 @@ from routers.therapist import therapist_router
 from routers.therapy_session import therapy_router
 from routers.auth import auth_router
 
-# env variables
-import os
-SECRET = os.getenv('encrypt_pass')
-
 
 app = FastAPI()
 app.title = "API para la plataforma de salud ental en línea."
@@ -33,7 +29,12 @@ def init_db():
     print('database intialized :D')
 
 if __name__ == "__main__":
+    from dotenv import dotenv_values
+    envConfig = dotenv_values()
     init_db()
+
+    print(envConfig['encrypt_pass'])
+
     uvicorn.run("main:app", host="0.0.0.0",
                 port=int(os.environ.get("PORT", 8000)))
     

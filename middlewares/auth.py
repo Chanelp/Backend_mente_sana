@@ -5,7 +5,7 @@ from fastapi.security import OAuth2PasswordBearer
 
 OauthScheme = OAuth2PasswordBearer(tokenUrl="token")
 
-from main import SECRET
+SECRET = ''
 
 def verify_JSON_web_token(token: str = Depends(OauthScheme)):
     credentials_exception = HTTPException(
