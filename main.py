@@ -31,7 +31,11 @@ def init_db():
 if __name__ == "__main__":
     import utils.env as env
     init_db()
-    print(env.read_env_key('encrypt_pass'))
+
+#   Code to load .env files to envoirements variables 
+    from dotenv import load_dotenv
+    load_dotenv()
+
     uvicorn.run("main:app", host="0.0.0.0",
                 port=int(os.environ.get("PORT", 8000)))
     
