@@ -4,9 +4,10 @@ from schemas.user import User
 from services.user import UserService
 from config.database import Session
 import jwt
-from dotenv import dotenv_values
+from utils.env import read_env_key 
+SECRET = read_env_key('encrypt_pass')
 
-envConfig = dotenv_values('.env')
+
 
 auth_router = APIRouter(prefix='/auth')
 
@@ -22,7 +23,7 @@ async def create_user(new_user: User) -> dict:
 
     else:
         payload["sub"] = added_user.id
-        token = jwt.encode(payload, envConfig['encrypt_pass'], algorithm='HS256')
+        token = jwt.encode(payload, SECRET, algorithm='HS256')
         return JSONResponse(content= {"message": "Usuario registrado exitosamente!", "jwToken": token}, status_code= 201)
 
 @auth_router.post(path="/login", tags = ["Auth"], response_model=dict, status_code= 200)
@@ -37,5 +38,10 @@ def login(email:str, password:str, request: Request):
 
         if bool(response["invalid"]):
             return JSONResponse(status_code=404, content={"message":"Usuario o contraseña incorrecta"})
+        
+        payload = {"sub": ""}
 
-        return JSONResponse(status_code=200, content={"message":"Inicio de sesión exitoso"})
+        payload["sub"] = response['id']
+        tkn = jwt.encode(payload, SECRET, algorithm='HS256')
+
+        return JSONResponse(status_code=200, content={"message":"Inicio de sesión exitoso", "token": tkn})
