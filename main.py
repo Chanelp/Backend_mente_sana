@@ -42,7 +42,6 @@ if __name__ == "__main__":
     init_db()
 
 #   Code to load .env files to envoirements variables 
-    #redeploy
     from dotenv import load_dotenv
     load_dotenv()
 
