@@ -34,15 +34,14 @@ def login(email:str, password:str, request: Request):
 
         response = UserService(db).login_user(email, password)
 
+        if bool(response["invalid"]):
+            return JSONResponse(status_code=404, content={"message":"Usuario o contraseña incorrecta"})
+
         payload["sub"] = response['userData'].id
         tkn = jwt.encode(payload, SECRET, algorithm='HS256')
     except HTTPException as e:
         raise HTTPException(status_code= 500, detail= str(e))
     
     else:
-
-        if bool(response["invalid"]):
-            return JSONResponse(status_code=404, content={"message":"Usuario o contraseña incorrecta"})
-        
         return JSONResponse(status_code=200, content={"message":"Inicio de sesión exitoso", "token": tkn})
         
