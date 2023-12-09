@@ -19,6 +19,14 @@ app.include_router(therapist_router)
 app.include_router(therapy_router)
 app.include_router(auth_router)
 
+# middlewares
+from fastapi.middleware.cors import CORSMiddleware 
+app.add_middleware(CORSMiddleware, 
+    allow_origins=['*'], 
+    allow_credentials=True, 
+    allow_methods=["*"],
+    allow_headers=["*"])
+
 def init_db():
     from models import user, therarpist, therapy_session, statuses
     Base.metadata.create_all(bind = engine)
