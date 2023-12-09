@@ -1,5 +1,6 @@
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
 from config.database import Base, engine
 import uvicorn
 import os
@@ -17,6 +18,15 @@ from jwt import decode
 
 app = FastAPI()
 app.title = "API para la plataforma de salud ental en línea."
+
+# Configuración de CORS para permitir solicitudes desde todos los orígenes
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Puedes especificar los dominios permitidos en lugar de "*"
+    allow_credentials=True,
+    allow_methods=["*"],  # Puedes especificar los métodos permitidos (GET, POST, etc.)
+    allow_headers=["*"],  # Puedes especificar los encabezados permitidos
+)
 
 # routers
 app.include_router(user_router)

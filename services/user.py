@@ -4,7 +4,6 @@ from sqlalchemy.orm import Session
 
 import bcrypt
 
-
 class UserService:
     def __init__(self, db:Session):
         self.db = db

@@ -10,7 +10,6 @@ class User(BaseModel):
     last_name: str
     email: str
     password: str
-    createdDate: Union[datetime, None] = datetime.now()
     genre: str
     date_birth: date
     rol: str = "User"
@@ -23,7 +22,8 @@ class User(BaseModel):
                 "email": "Correo electrónico",
                 "password": "Contraseña",
                 "date_birth": "Fecha nacimiento 0000-00-00",
-                "genre": "Género"
+                "genre": "Género",
+                "rol": "User"
             }]
         }
     }

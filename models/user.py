@@ -13,6 +13,6 @@ class UserModel(Base):
     date_birth = Column(DateTime, nullable=False)
     rol = Column(String)
     
-    createdDate = createdDate._clone()
+    # createdDate = createdDate._clone()
 
 
