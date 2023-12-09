@@ -24,7 +24,7 @@ class UserService:
 
         invalidLogin = not user_searched or not bcrypt.checkpw(password.encode('utf-8'), user_searched.password)
         
-        return {"invalid": invalidLogin, "token": user_searched}
+        return {"invalid": invalidLogin, "userData": user_searched}
     
     def delete_user(self, id: int):
         deleted = self.db.query(UserModel).filter(UserModel.id == id).delete()
