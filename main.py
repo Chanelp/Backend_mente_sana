@@ -1,10 +1,5 @@
-<<<<<<< HEAD
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
-from fastapi.middleware.cors import CORSMiddleware
-=======
-from fastapi import FastAPI
->>>>>>> e2711e5ecb229e7df69532523de5928cb9f21276
 from config.database import Base, engine
 import uvicorn
 import os
