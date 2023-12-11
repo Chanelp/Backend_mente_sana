@@ -1,5 +1,5 @@
 from config.database import Base, createdDate
-from sqlalchemy import Column, String, Integer, DateTime
+from sqlalchemy import Column, String, Integer, DateTime, CHAR
 
 class UserModel(Base):
     __tablename__ = "users"
@@ -8,7 +8,7 @@ class UserModel(Base):
     name = Column(String, nullable=False)
     last_name = Column(String, nullable=False)
     email = Column(String, nullable=False, unique=True)
-    password = Column(String, nullable=False)
+    password = Column(CHAR(60) , nullable=False)
     genre = Column(String)
     date_birth = Column(DateTime, nullable=False)
     rol = Column(String)

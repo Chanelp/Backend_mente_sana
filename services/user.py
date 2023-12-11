@@ -13,15 +13,15 @@ class UserService:
 
         # generate salt
         salt = bcrypt.gensalt()
-        new_user.password = bcrypt.hashpw(new_user.password.encode('utf-8'), salt)
+        new_user.password = bcrypt.hashpw(new_user.password.encode(), salt).decode()
         self.db.add(new_user)
         self.db.commit()
         return new_user
 
     def login_user(self, email:str, password:str):
         user_searched = self.db.query(UserModel).filter(UserModel.email == email).one_or_none()
-
-        invalidLogin = not user_searched or not bcrypt.checkpw(password.encode('utf-8'), user_searched.password)
+        
+        invalidLogin = not user_searched or not bcrypt.checkpw(password.encode(), user_searched.password.encode())
         
         return {"invalid": invalidLogin, "userData": user_searched}
     
