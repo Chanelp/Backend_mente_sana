@@ -9,6 +9,7 @@ class TherapistModel(Base):
     
     id = Column(Integer, primary_key = True, autoincrement = True)
     name = Column(String, nullable=False)
+    last_name = Column(String, nullable=False)
     email = Column(String, nullable=False, unique=True)
     password = Column(CHAR(60), nullable=False)
 

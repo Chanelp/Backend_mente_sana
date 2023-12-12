@@ -5,6 +5,7 @@ from typing import Optional
 class Therapist(BaseModel):
     id: Optional[int] = None
     name: str
+    last_name: str
     email: str
     password: str
     professional_description: str
@@ -16,6 +17,8 @@ class Therapist(BaseModel):
         "json_schema_extra": {
         "examples": [{
                 "name" : "Nombre del terapeuta",
+                "last_name" : "apellido del terapeuta",
+
                 "email" : "Email del terapeuta",
                 "password" : "contraseña del terapeuta",
 
