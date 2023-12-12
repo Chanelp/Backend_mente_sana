@@ -1,7 +1,6 @@
 from pydantic import BaseModel
 from typing import Optional
-from datetime import datetime, date
-from typing import Union
+from datetime import date
 
 
 class User(BaseModel):
@@ -12,6 +11,9 @@ class User(BaseModel):
     password: str
     genre: str
     date_birth: date
+
+    therapist_id: Optional[int] = None
+
     rol: str = "User"
 
     model_config = {

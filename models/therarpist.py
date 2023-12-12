@@ -1,18 +1,18 @@
 from config.database import Base, createAt
-from sqlalchemy import Column, String, Integer, ForeignKey
+from sqlalchemy import Column, String, Integer, ForeignKey, CHAR
 
 from models.statuses import StatusesModel
-from models.user import UserModel
 
 class TherapistModel(Base):
     
     __tablename__ = "therapist"
     
     id = Column(Integer, primary_key = True, autoincrement = True)
-    professional_description = Column(String)
-    specialty = Column(String)
-    license = Column(String)
+    professional_description = Column(String, nullable=True)
+    specialty = Column(String, nullable=False)
+    license = Column(String, nullable=False)
+
     status_id = Column(Integer, ForeignKey(StatusesModel.id))
-    user_id = Column(Integer, ForeignKey(UserModel.id))
+    photo = Column(String, nullable=True)
 
     createAt = createAt.copy()

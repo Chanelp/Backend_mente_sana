@@ -16,5 +16,8 @@ def get_sesion_by_therapist(id:int) -> dict:
     except HTTPException as e:
         raise HTTPException(status_code = 500, detail = str(e))
 
+    except Exception as e:
+        raise HTTPException(status_code = 400, detail = str(e))
+
     else:
         return JSONResponse(content= jsonable_encoder(sesiones), status_code= 200)

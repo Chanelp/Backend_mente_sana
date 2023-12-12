@@ -6,8 +6,6 @@ from services.user import UserService
 from config.database import Session
 from typing import List
 
-from middlewares.auth import verify_JSON_web_token
-
 
 user_router = APIRouter(prefix='/user')
     
@@ -17,7 +15,9 @@ def get_all_users():
         db = Session()
     except HTTPException as e:
         raise HTTPException(status_code=500, detail=str(e))
-    
+    except Exception as e:
+        raise HTTPException(status_code = 400, detail = str(e))
+
     else:
         all_users = UserService(db).get_all_users()
 
@@ -32,7 +32,9 @@ def get_one_user(id: int):
         db = Session()
     except HTTPException as e:
         raise HTTPException(status_code=500, detail=str(e))
-    
+    except Exception as e:
+        raise HTTPException(status_code = 400, detail = str(e))
+
     else:
         user_searched = UserService(db).get_user(id)
 
@@ -47,7 +49,10 @@ def update_user(id: int, user: User):
         db = Session()
     except HTTPException as e:
         raise HTTPException(status_code=500, detail=str(e))
-    
+
+    except Exception as e:
+        raise HTTPException(status_code = 400, detail = str(e))
+
     else:
         user_to_update = UserService(db).get_user(id)
 
@@ -63,7 +68,9 @@ def delete_user(id: int):
         db = Session()
     except HTTPException as e:
         raise HTTPException(status_code= 500, detail=str(e))
-    
+    except Exception as e:
+        raise HTTPException(status_code = 500, detail = str(e))
+
     else:
         user_delete = UserService(db).delete_user(id)
 

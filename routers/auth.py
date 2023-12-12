@@ -37,11 +37,18 @@ def login(email:str, password:str, request: Request):
         if bool(response["invalid"]):
             return JSONResponse(status_code=404, content={"message":"Usuario o contraseña incorrecta"})
 
+        if (response['therapistData'] != None):
+            payload["therapist_id"] = response['therapistData'].id or None            
+
         payload["sub"] = response['userData'].id
+
         tkn = jwt.encode(payload, SECRET, algorithm='HS256')
     except HTTPException as e:
         raise HTTPException(status_code= 500, detail= str(e))
-    
+
+    except Exception as e:
+        raise HTTPException(status_code = 500, detail = str(e))
+
     else:
         return JSONResponse(status_code=200, content={"message":"Inicio de sesión exitoso", "token": tkn})
         

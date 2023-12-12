@@ -1,8 +1,12 @@
 from schemas.user import User
-from models.user import UserModel
 from sqlalchemy.orm import Session
 
+from models.user import UserModel
+from models.therarpist import TherapistModel
+
 import bcrypt
+
+import json
 
 class UserService:
     def __init__(self, db:Session):
@@ -19,11 +23,13 @@ class UserService:
         return new_user
 
     def login_user(self, email:str, password:str):
-        user_searched = self.db.query(UserModel).filter(UserModel.email == email).one_or_none()
+        user_searched = self.db.query(UserModel).outerjoin(TherapistModel).filter(UserModel.email == email).one_or_none()
         
         invalidLogin = not user_searched or not bcrypt.checkpw(password.encode(), user_searched.password.encode())
+
+        therapist_data = self.db.query(TherapistModel).filter(TherapistModel.id == user_searched.id).one_or_none()
         
-        return {"invalid": invalidLogin, "userData": user_searched}
+        return {"invalid": invalidLogin, "userData": user_searched, "therapistData": therapist_data}
     
     def delete_user(self, id: int):
         deleted = self.db.query(UserModel).filter(UserModel.id == id).delete()
