@@ -1,5 +1,5 @@
 from jwt import decode
-from jwt.exceptions import PyJWKError
+from jwt.exceptions import PyJWKError, DecodeError
 from fastapi import Depends, HTTPException, status, Request
 
 from utils.env import read_env_key
@@ -12,6 +12,7 @@ def verify_JSON_web_token(request: Request):
         detail="Could not validate credentials",
         headers={"WWW-Authenticate": "Bearer"},
     )
+    
     try:
         token = request.headers.get('authentication-token')
 
@@ -23,5 +24,7 @@ def verify_JSON_web_token(request: Request):
         if payload is None:
             raise credentials_exception
     except PyJWKError:
+        raise credentials_exception
+    except DecodeError:
         raise credentials_exception
     return payload

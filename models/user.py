@@ -16,8 +16,6 @@ class UserModel(Base):
     genre = Column(String)
     date_birth = Column(DateTime, nullable=False)
 
-    therapist_id = Column(Integer, ForeignKey(TherapistModel.id), nullable=True)
-
     rol = Column(String, default='user')
     
     createAt = createAt.copy()

@@ -12,8 +12,6 @@ class User(BaseModel):
     genre: str
     date_birth: date
 
-    therapist_id: Optional[int] = None
-
     rol: str = "User"
 
     model_config = {

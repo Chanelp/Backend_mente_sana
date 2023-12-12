@@ -8,6 +8,10 @@ class TherapistModel(Base):
     __tablename__ = "therapist"
     
     id = Column(Integer, primary_key = True, autoincrement = True)
+    name = Column(String, nullable=False)
+    email = Column(String, nullable=False, unique=True)
+    password = Column(CHAR(60), nullable=False)
+
     professional_description = Column(String, nullable=True)
     specialty = Column(String, nullable=False)
     license = Column(String, nullable=False)

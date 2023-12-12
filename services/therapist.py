@@ -1,26 +1,25 @@
+# server
+from fastapi import HTTPException
+
 from models.therarpist import TherapistModel
 from models.user import UserModel
 from sqlalchemy.orm import Session
+
+# password hash
+import bcrypt as hasher
 
 class TherapistService:
     def __init__(self, db:Session):
         self.db = db
     
-    def register_therapist(self, therapist, user_id: int):
-        user = self.db.get(UserModel, user_id) 
-
-        if (user.therapist_id != None):
-            raise Exception('Este usuario ya es terapeuta')
-
-
+    def register_therapist(self, therapist):
         new_therapist = TherapistModel(**therapist.model_dump())
-        self.db.add(new_therapist)
+
+        new_salt = hasher.gensalt()
+        new_therapist.password = hasher.hashpw(new_therapist.password.encode(), new_salt).decode()
         
-
+        self.db.add(new_therapist)
         self.db.flush()
-
-        user.therapist_id = new_therapist.id
-
         self.db.commit()
         return new_therapist
 
