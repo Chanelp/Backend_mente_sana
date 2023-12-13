@@ -26,10 +26,8 @@ class UserService:
         user_searched = self.db.query(UserModel).outerjoin(TherapistModel).filter(UserModel.email == email).one_or_none()
         
         invalidLogin = not user_searched or not bcrypt.checkpw(password.encode(), user_searched.password.encode())
-
-        therapist_data = self.db.query(TherapistModel).filter(TherapistModel.id == user_searched.id).one_or_none()
         
-        return {"invalid": invalidLogin, "userData": user_searched, "therapistData": therapist_data}
+        return {"invalid": invalidLogin, "userData": user_searched}
     
     def delete_user(self, id: int):
         deleted = self.db.query(UserModel).filter(UserModel.id == id).delete()

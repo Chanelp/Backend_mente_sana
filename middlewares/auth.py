@@ -27,4 +27,5 @@ def verify_JSON_web_token(request: Request):
         raise credentials_exception
     except DecodeError:
         raise credentials_exception
-    return payload
+    else:
+        return payload

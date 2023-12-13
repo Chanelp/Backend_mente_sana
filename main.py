@@ -9,6 +9,7 @@ from routers.user import user_router
 from routers.therapist import therapist_router
 from routers.therapy_session import therapy_router
 from routers.auth import auth_router
+from routers.injuries import injuries_router
 
 
 app = FastAPI()
@@ -19,6 +20,7 @@ app.include_router(user_router)
 app.include_router(therapist_router)
 app.include_router(therapy_router)
 app.include_router(auth_router)
+app.include_router(injuries_router)
 
 # middlewares
 from fastapi.middleware.cors import CORSMiddleware 
@@ -29,11 +31,12 @@ app.add_middleware(CORSMiddleware,
     allow_headers=["*"])
 
 def init_db():
-    from models import user, therarpist, therapy_session, statuses
+    from models import user, therarpist, therapy_session, statuses, injuries
     Base.metadata.create_all(bind = engine)
 
     # Create default data
     statuses.StatusesModel.create_default_records()
+    injuries.InjuriesModel.create_default_records()
 
     print('database intialized :D')
 
