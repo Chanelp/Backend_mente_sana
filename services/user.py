@@ -1,12 +1,18 @@
-from schemas.user import User
+# ORM
 from sqlalchemy.orm import Session
 
+# Schemas
+from schemas.user import User
+
+# Models
 from models.user import UserModel
 from models.therarpist import TherapistModel
 
+# Encrypting
 import bcrypt
 
-import json
+# Utils
+from utils.customException import CustomException
 
 class UserService:
     def __init__(self, db:Session):
@@ -22,12 +28,13 @@ class UserService:
         self.db.commit()
         return new_user
 
-    def login_user(self, email:str, password:str):
-        user_searched = self.db.query(UserModel).outerjoin(TherapistModel).filter(UserModel.email == email).one_or_none()
+    def login_user(self, email:str, password:str) -> UserModel:
+        user_searched = self.db.query(UserModel).filter(UserModel.email == email).one_or_none()
         
-        invalidLogin = not user_searched or not bcrypt.checkpw(password.encode(), user_searched.password.encode())
+        if (not user_searched or not bcrypt.checkpw(password.encode(), user_searched.password.encode())):
+            raise CustomException('Usuario o contraseña incorrecta', 401)
         
-        return {"invalid": invalidLogin, "userData": user_searched}
+        return user_searched
     
     def delete_user(self, id: int):
         deleted = self.db.query(UserModel).filter(UserModel.id == id).delete()
@@ -40,7 +47,7 @@ class UserService:
         return users
     
     def get_user(self, id: int):
-        user_searched = self.db.query(UserModel).filter(UserModel.id == id).first()
+        user_searched = self.db.get(UserModel, id)
         return user_searched
     
     def update_user_info(self, id:int, new_data: User):

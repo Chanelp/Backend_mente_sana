@@ -5,6 +5,9 @@ from sqlalchemy.orm import Session
 # password hash
 import bcrypt as hasher
 
+#utils 
+from utils.customException import CustomException
+
 class TherapistService:
     def __init__(self, db:Session):
         self.db = db
@@ -37,10 +40,11 @@ class TherapistService:
         return therapist
 
     def change_status(self, therapistId: int, statusId:int):
-        if statusId not in [1, 3]:
-            raise Exception('Estatus no válido')
-        
+    
         therapist = self.db.get(TherapistModel, therapistId)
+
+        if statusId == therapist.status_id:
+            raise CustomException('Ya estás en ese estado. Sin modificaciones.', 400)
         
         therapist.status_id = statusId
         self.db.commit()
@@ -51,3 +55,15 @@ class TherapistService:
         therapist.professional_description = description
 
         self.db.commit()
+
+    def change_password(self, id:int, actual_password:str, new_password:str):
+        
+        therapist_account = self.db.get(TherapistModel, id)
+
+        if (not self.verify_old_password(actual_password, therapist_account.password)): raise CustomException('Contraseña actual invalida', 400)
+        
+        therapist_account.password = hasher.hashpw(new_password.encode(), hasher.gensalt())
+        self.db.commit()
+
+    def verify_old_password(self, password:str, hashed_password:str) -> bool:
+        return hasher.checkpw(password.encode(), hashed_password.encode())

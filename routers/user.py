@@ -1,10 +1,21 @@
+# Server
 from fastapi import APIRouter, HTTPException, Depends
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
+
+# Schemas
 from schemas.user import User
+
+# Services
 from services.user import UserService
+
+# Config / db
 from config.database import Session
 from typing import List
+
+# ORM
+from sqlalchemy.exc import SQLAlchemyError
+
 
 
 user_router = APIRouter(prefix='/user')
@@ -13,13 +24,18 @@ user_router = APIRouter(prefix='/user')
 def get_all_users():
     try:
         db = Session()
+        all_users = UserService(db).get_all_users()
     except HTTPException as e:
         raise HTTPException(status_code=500, detail=str(e))
+    
+    except SQLAlchemyError as e:
+        raise HTTPException(status_code = 400, detail = str(e))
+    
     except Exception as e:
         raise HTTPException(status_code = 400, detail = str(e))
+    
 
     else:
-        all_users = UserService(db).get_all_users()
 
         if not all_users:
             return JSONResponse(status_code=404, content={"message":"Usuarios no encontrados"})
@@ -30,13 +46,18 @@ def get_all_users():
 def get_one_user(id: int):
     try:
         db = Session()
+        user_searched = UserService(db).get_user(id)
+
     except HTTPException as e:
         raise HTTPException(status_code=500, detail=str(e))
+    
+    except SQLAlchemyError as e:
+        raise HTTPException(status_code = 400, detail = str(e))
+
     except Exception as e:
         raise HTTPException(status_code = 400, detail = str(e))
 
     else:
-        user_searched = UserService(db).get_user(id)
 
         if not user_searched:
             return JSONResponse(status_code=404, content={"message":"Usuario no encontrado."})
@@ -49,6 +70,9 @@ def update_user(id: int, user: User):
         db = Session()
     except HTTPException as e:
         raise HTTPException(status_code=500, detail=str(e))
+    
+    except SQLAlchemyError as e:
+        raise HTTPException(status_code = 400, detail = str(e))
 
     except Exception as e:
         raise HTTPException(status_code = 400, detail = str(e))
@@ -68,6 +92,10 @@ def delete_user(id: int):
         db = Session()
     except HTTPException as e:
         raise HTTPException(status_code= 500, detail=str(e))
+
+    except SQLAlchemyError as e:
+        raise HTTPException(status_code = 400, detail = str(e))    
+
     except Exception as e:
         raise HTTPException(status_code = 500, detail = str(e))
 

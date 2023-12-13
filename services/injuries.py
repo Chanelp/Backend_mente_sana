@@ -7,6 +7,10 @@ from schemas.injuries import injuries
 # models
 from models.injuries import InjuriesModel
 
+# utils
+from typing import List
+from utils.customException import CustomException
+
 
 class injuriesService:
     def __init__(self, db: Session) -> None:
@@ -19,3 +23,11 @@ class injuriesService:
 
         self.db.add(new_injury)
         self.db.commit()
+
+    def get_injuries(self, page:int, limit:int) -> List[InjuriesModel]:
+        injuries = self.db.query(InjuriesModel).limit(limit).offset(page*limit).all()
+
+        if len(injuries) == 0:
+            raise CustomException('No hay más enfermedades', 404)
+        
+        return injuries

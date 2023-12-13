@@ -1,3 +1,4 @@
+# Server
 from fastapi import APIRouter, HTTPException, Request
 from fastapi.responses import JSONResponse
 
@@ -9,9 +10,21 @@ from schemas.therapist import Therapist
 from services.user import UserService
 from services.therapist import TherapistService
 
+# Config
 from config.database import Session
+
+# JSON web token
 import jwt
+
+# ORM
+from sqlalchemy.exc import SQLAlchemyError 
+
+# Utils
 from utils.env import read_env_key 
+from utils.customException import CustomException
+
+
+# Encoding secret to JWT
 SECRET = read_env_key('encrypt_pass')
 
 auth_router = APIRouter(prefix='/auth')
@@ -29,6 +42,9 @@ async def create_user(new_user: User) -> dict:
     except HTTPException as e:
         raise HTTPException(status_code = 500, detail = str(e))
 
+    except SQLAlchemyError as e:
+        raise HTTPException(status_code=400, detail= str(e))
+
     else:
         
         return JSONResponse(content= {"message": "Usuario registrado exitosamente!", "jwToken": token}, status_code= 201)
@@ -41,17 +57,14 @@ def login(email:str, password:str, request: Request):
 
         response = UserService(db).login_user(email, password)
 
-        if bool(response["invalid"]):
-            return JSONResponse(status_code=404, content={"message":"Usuario o contraseña incorrecta"})
-
-        payload["sub"] = response['userData'].id
+        payload["sub"] = response.id
 
         tkn = jwt.encode(payload, SECRET, algorithm='HS256')
     except HTTPException as e:
         raise HTTPException(status_code= 500, detail= str(e))
 
-    except Exception as e:
-        raise HTTPException(status_code = 500, detail = str(e))
+    except CustomException as e:
+        raise HTTPException(status_code = e.status_code, detail= e.message)
 
     else:
         return JSONResponse(status_code=200, content={"message":"Inicio de sesión exitoso", "token": tkn})
