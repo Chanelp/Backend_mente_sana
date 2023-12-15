@@ -18,7 +18,7 @@ class TherapySessionModel(Base):
     session_time = Column(String, nullable=False)
     selected_service = Column(String, nullable=False)
     patient_id = Column(Integer, ForeignKey(UserModel.id), nullable=False)
-    price = Column(Float, nullable=True)
+    price = Column(String, nullable=True)
     status_id = Column(Integer, ForeignKey(StatusesModel.id), nullable=False)
     
     createAt = createAt.copy()

@@ -9,7 +9,7 @@ class therapy_session(BaseModel):
     session_time: str
     selected_service: str
     patient_id: int
-    price: Optional[float] = None 
+    price: Optional[str] = None 
     status_id:Optional[int] = 1
 
     createAt: Union[datetime, None] = datetime.now()

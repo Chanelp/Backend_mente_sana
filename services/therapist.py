@@ -42,9 +42,9 @@ class TherapistService:
 
         sessionsService = TherapySessionServices(self.db)
 
-        sessions = sessionsService.getSessionsByTherapist(id)
+        sessions = sessionsService.getSessionsByTherapist()
 
-        pending_sessions = sessionsService.getPendingSessions(id)
+        pending_sessions = sessionsService.getPendingSessions()
 
         return {**therapist.__dict__, "sessions": sessions, "pending_sessions": pending_sessions}
 
