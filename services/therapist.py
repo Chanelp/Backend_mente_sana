@@ -79,3 +79,5 @@ class TherapistService:
     
     def get_active_therapists(self):
         return self.db.query(TherapistModel).filter(TherapistModel.status_id == 1).all()
+
+# Otro push
