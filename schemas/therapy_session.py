@@ -6,7 +6,7 @@ class therapy_session(BaseModel):
     id: Optional[int] = None
     therapist_id: int 
     session_date: datetime
-    session_note: Optional[str]
+    session_note: Optional[str] = None
     patient_id: int
     status_id:Optional[int] = 2
 

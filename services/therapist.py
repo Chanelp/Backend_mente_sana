@@ -8,6 +8,9 @@ import bcrypt as hasher
 #utils 
 from utils.customException import CustomException
 
+# services
+from services.therapy_session import TherapySessionServices
+
 class TherapistService:
     def __init__(self, db:Session):
         self.db = db
@@ -37,7 +40,13 @@ class TherapistService:
     def get_therapist_profile(self, id:int) -> TherapistModel:
         therapist = self.db.query(TherapistModel).filter(TherapistModel.id == id).one_or_none()
 
-        return therapist
+        sessionsService = TherapySessionServices(self.db)
+
+        sessions = sessionsService.getSessionsByTherapist(id)
+
+        pending_sessions = sessionsService.getPendingSessions(id)
+
+        return {**therapist.__dict__, "sessions": sessions, "pending_sessions": pending_sessions}
 
     def change_status(self, therapistId: int, statusId:int):
     

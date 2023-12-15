@@ -23,11 +23,11 @@ therapy_router = APIRouter(prefix='/therapy')
 TAGS = ['Therapy session']
 
 
-@therapy_router.post(path='/therapy_sessions/{id}', tags=TAGS, response_model=dict, status_code=200)
+@therapy_router.get(path='/therapy_sessions/{id}', tags=TAGS, response_model=dict, status_code=200)
 async def get_sesion_by_therapist(id:int) -> dict:
     try:
-        service = TherapySessionServices(Session())
-        sesiones = service.getSessionsByTherapist(id)
+        db = Session()
+        sesiones = TherapySessionServices(db).getSessionsByTherapist(id)
     except HTTPException as e:
         raise HTTPException(status_code = 500, detail = str(e))
 
@@ -56,7 +56,34 @@ async def create_therapy(therapy: therapy_session, request: Request) -> List[dic
     else:
         return JSONResponse({"message":"Solicitud de terapia enviada correctamente"}, 200)
     
-@therapy_router.put('/accept_session', status_code=200, response_model=dict, tags=TAGS)
-async def accept_tharapy(request: Request, TherapyId:int):
-    # payload = 
-    pass
+@therapy_router.put('/accept_session/{therapyId}', status_code=200, response_model=dict, tags=TAGS)
+async def accept_therapy(request: Request, therapyId:int):
+    payload = verify_JSON_web_token(request, 'therapist')
+
+    try:
+        db = Session()
+        TherapySessionServices(db).accept_therapy(therapyId, int(payload['sub']))
+    except HTTPException as e:
+        raise HTTPException(400, str(e))
+    
+    except CustomException as e:
+        raise HTTPException(e.status_code, e.message)
+    
+    else:
+        return JSONResponse({"message":"Solicitud aceptada correctamente"}, 200)
+    
+@therapy_router.put('/reject_session/{therapyId}', status_code=200, response_model=dict, tags=TAGS)
+async def reject_therapy(request: Request, therapyId:int):
+    payload = verify_JSON_web_token(request, 'therapist')
+
+    try:
+        db = Session()
+        TherapySessionServices(db).reject_therapy(therapyId, int(payload['sub']))
+    except HTTPException as e:
+        raise HTTPException(400, str(e))
+    
+    except CustomException as e:
+        raise HTTPException(e.status_code, e.message)
+    
+    else:
+        return JSONResponse({"message":"Solicitud aceptada correctamente"}, 200)

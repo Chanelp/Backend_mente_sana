@@ -1,6 +1,6 @@
 from jwt import decode
 from jwt.exceptions import PyJWKError, DecodeError
-from fastapi import Depends, HTTPException, status, Request
+from fastapi import HTTPException, status, Request
 
 from utils.env import read_env_key
 

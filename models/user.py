@@ -1,6 +1,9 @@
 from config.database import Base, createAt
 
+
+# ORM
 from sqlalchemy import Column, String, Integer, DateTime, CHAR, ForeignKey
+from sqlalchemy.orm import relationship
 
 # Models
 from models.therarpist import TherapistModel
@@ -19,4 +22,6 @@ class UserModel(Base):
     rol = Column(String, default='user')
     
     createAt = createAt.copy()
+
+    therapies = relationship("TherapySessionModel", back_populates="patient")
 
