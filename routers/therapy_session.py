@@ -35,6 +35,7 @@ async def get_sesion_by_therapist(id:int) -> dict:
         raise HTTPException(status_code = 400, detail = str(e))
 
     else:
+        db.close()
         return JSONResponse(content= jsonable_encoder(sesiones), status_code= 200)
     
 @therapy_router.post(path='/new-therapy', tags=TAGS, response_model=List[dict], status_code=200)
@@ -54,6 +55,7 @@ async def create_therapy(therapy: therapy_session, request: Request) -> List[dic
         raise HTTPException(e.status_code, e.message)
     
     else:
+        db.close()
         return JSONResponse({"message":"Solicitud de terapia enviada correctamente"}, 200)
     
 @therapy_router.put('/accept_session/{therapyId}', status_code=200, response_model=dict, tags=TAGS)
@@ -70,6 +72,7 @@ async def accept_therapy(request: Request, therapyId:int):
         raise HTTPException(e.status_code, e.message)
     
     else:
+        db.close()
         return JSONResponse({"message":"Solicitud aceptada correctamente"}, 200)
     
 @therapy_router.put('/reject_session/{therapyId}', status_code=200, response_model=dict, tags=TAGS)
@@ -86,4 +89,5 @@ async def reject_therapy(request: Request, therapyId:int):
         raise HTTPException(e.status_code, e.message)
     
     else:
+        db.close()
         return JSONResponse({"message":"Solicitud aceptada correctamente"}, 200)

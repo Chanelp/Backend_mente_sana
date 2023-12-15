@@ -35,7 +35,6 @@ class TherapistService:
 
     def get_all_therapists(self, limit):
         therapists = self.db.query(TherapistModel).limit(limit).all()
-        self.db.close()
         return therapists
     
     def get_therapist_profile(self, id:int) -> TherapistModel:
@@ -47,7 +46,6 @@ class TherapistService:
 
         pending_sessions = sessionsService.getPendingSessions(id)
 
-        self.db.close()
         return {**therapist.__dict__, "sessions": sessions, "pending_sessions": pending_sessions}
 
     def change_status(self, therapistId: int, statusId:int):
@@ -66,7 +64,6 @@ class TherapistService:
         therapist.professional_description = description
 
         self.db.commit()
-        self.db.close()
 
     def change_password(self, id:int, actual_password:str, new_password:str):
         
@@ -76,14 +73,9 @@ class TherapistService:
         
         therapist_account.password = hasher.hashpw(new_password.encode(), hasher.gensalt())
         self.db.commit()
-        self.db.close()
-
 
     def verify_old_password(self, password:str, hashed_password:str) -> bool:
         return hasher.checkpw(password.encode(), hashed_password.encode())
     
     def get_active_therapists(self):
-        active_therapists = self.db.query(TherapistModel).filter(TherapistModel.status_id == 1).all()
-        self.db.close()
-
-        return active_therapists
+        return self.db.query(TherapistModel).filter(TherapistModel.status_id == 1).all()

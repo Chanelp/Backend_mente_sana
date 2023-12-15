@@ -42,8 +42,10 @@ def get_all_users():
     else:
 
         if not all_users:
+            db.close()
             return JSONResponse(status_code=404, content={"message":"Usuarios no encontrados"})
         
+        db.close()
         return JSONResponse(status_code=200, content=jsonable_encoder(all_users))
 
 @user_router.get(path="/user/{id}", tags=["Users"], response_model=User, status_code=200)
@@ -64,8 +66,10 @@ def get_one_user(id: int):
     else:
 
         if not user_searched:
+            db.close()  
             return JSONResponse(status_code=404, content={"message":"Usuario no encontrado."})
         
+        db.close()
         return JSONResponse(status_code=200, content=jsonable_encoder(user_searched))
 
 @user_router.put(path="/user/{id}", tags=["Users"], response_model=dict, status_code=200)
@@ -85,9 +89,11 @@ def update_user(id: int, user: User):
         user_to_update = UserService(db).get_user(id)
 
         if not user_to_update:
+            db.close()
             return JSONResponse(status_code=404, content={"message":"Usuario no encontrado."})
         
         UserService(db).update_user_info(id, user)
+        db.close()
         return JSONResponse(status_code=200, content={"message":"Datos del usuario actualizados correctamente."})
 
 @user_router.delete(path="/user/{id}", tags=["Users"], response_model=dict, status_code=200)

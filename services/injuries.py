@@ -23,7 +23,6 @@ class injuriesService:
 
         self.db.add(new_injury)
         self.db.commit()
-        self.db.close()
 
     def get_injuries(self, page:int, limit:int) -> List[InjuriesModel]:
         injuries = self.db.query(InjuriesModel).limit(limit).offset(page*limit).all()
@@ -31,5 +30,4 @@ class injuriesService:
         if len(injuries) == 0:
             raise CustomException('No hay más enfermedades', 404)
         
-        self.db.close()
         return injuries

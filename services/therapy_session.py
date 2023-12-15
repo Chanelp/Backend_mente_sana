@@ -24,7 +24,6 @@ class TherapySessionServices:
         for sess in sessions:
             sess.patient
 
-        self.db.close()
         return sessions
     
 
@@ -35,8 +34,6 @@ class TherapySessionServices:
             TherapySessionModel.session_date > datetime.now()).all()
         for sess in pending_sessions:
             sess.patient
-        
-        self.db.close()
         return pending_sessions
         
     
@@ -45,7 +42,6 @@ class TherapySessionServices:
         new_therapy = TherapySessionModel(**therapy.model_dump())
         self.db.add(new_therapy)
         self.db.commit()
-        self.db.close()
 
     def accept_therapy(self, id:int, therapistId:int):
         therapy = self.db.get(TherapySessionModel, id)
@@ -54,7 +50,6 @@ class TherapySessionServices:
 
         therapy.status_id = 1
         self.db.commit()
-        self.db.close()
 
     def reject_therapy(self, id:int, therapistId:int):
         therapy = self.db.get(TherapySessionModel, id)
@@ -63,4 +58,3 @@ class TherapySessionServices:
 
         therapy.status_id = 4
         self.db.commit()
-        self.db.close()

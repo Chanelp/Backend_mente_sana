@@ -57,4 +57,5 @@ async def get_injuries(page:int, limit:int):
         raise HTTPException(e.status_code, e.message)
     
     else:
+        db.close()
         return JSONResponse(content=jsonable_encoder(injuries), status_code=200)

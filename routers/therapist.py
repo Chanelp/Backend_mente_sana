@@ -42,9 +42,11 @@ def get_all_therapists(limit: int = 10):
         return JSONResponse(content={"message": str(e)}, status_code=400)
 
     else:
+        
         if not all_therapists:
             return JSONResponse(status_code=404, content={"message":"Terapeutas no encontrados"})
         
+        db.close()
         return JSONResponse(status_code=200, content=jsonable_encoder(all_therapists))
     
 
@@ -63,6 +65,8 @@ async def get_therapist_profile(request: Request):
         raise HTTPException(status_code = 400, detail = str(e))
     
     else:
+        
+        db.close()
         return JSONResponse(status_code=200, content=jsonable_encoder(therapist_data))
 
 @therapist_router.put(path='/change-status', tags=TAGS, status_code=200, response_model=dict)
@@ -88,6 +92,7 @@ async def change_status(request: Request, status:int):
     
     else:
         statusMessage = 'En linea' if status == 1 else 'Desconectado'
+        db.close()
         return JSONResponse(status_code=200, content={"message": f"Ahora estas {statusMessage}."})
     
 @therapist_router.put(path='/update-description', tags=TAGS, status_code=200, response_model=dict)
@@ -108,6 +113,7 @@ async def update_description(request: Request, description: str):
         raise HTTPException(status_code=400, detail=str(e))
     
     else:
+        db.close()
         return JSONResponse(status_code=200, content={"message": "Description actualizada correctamente"})
     
 @therapist_router.put(path='/change-passoword', tags=TAGS, response_model=dict, status_code=200)
@@ -127,6 +133,7 @@ async def change_password(request: Request, actual_password:str, new_password:st
         return JSONResponse(content={"message": e.message}, status_code=e.status_code)
     
     else:
+        db.close()
         return JSONResponse(status_code=200, content={"message": "Contraseña cambiada correctamente"})
     
 
@@ -144,4 +151,5 @@ async def get_active_therapists():
         if len(therapies) == 0:
             return JSONResponse(404, {"message": "No hay terapeutas activos en este momento"})
         
+        db.close()
         return JSONResponse({"message": f"Numero de terapeutas: {len(therapies)}", "data":jsonable_encoder(therapies)}, 200)

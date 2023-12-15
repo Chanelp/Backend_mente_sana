@@ -48,7 +48,7 @@ async def create_user(new_user: User) -> dict:
         raise HTTPException(status_code=400, detail= str(e))
 
     else:
-        
+        db.close()
         return JSONResponse(content= {"message": "Usuario registrado exitosamente!", "jwToken": token}, status_code= 201)
 
 @auth_router.post(path="/login", tags = TAGS, response_model=dict, status_code= 200)
@@ -69,6 +69,7 @@ def login(email:str, password:str, request: Request):
         raise HTTPException(status_code = e.status_code, detail= e.message)
 
     else:
+        db.close()
         return JSONResponse(status_code=200, content={"message":"Inicio de sesión exitoso", "token": tkn})
         
 
@@ -89,6 +90,8 @@ async def create_therapist(new_therapist: Therapist) -> dict:
         raise HTTPException(status_code=400, detail=str(e))
 
     else:
+        db.close()
+
         return JSONResponse(content= {"message": "Terepeuta registrado exitosamente!", "token": token}, status_code= 201)
 
 
@@ -110,4 +113,5 @@ async def login_therapist(email:str, password:str):
         raise HTTPException(status_code=500, detail=str(e))
     
     else:
+        db.close()
         return JSONResponse(status_code=201, content={"message": "Therapeuta logueado correctamente", "token": tkn})
