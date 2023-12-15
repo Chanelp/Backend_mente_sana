@@ -6,7 +6,7 @@ from schemas.user import User
 
 # Models
 from models.user import UserModel
-from models.therarpist import TherapistModel
+from models.therapy_session import TherapySessionModel
 
 # Encrypting
 import bcrypt
@@ -63,6 +63,11 @@ class UserService:
         self.db.add(user_searched)
         self.db.commit()
         self.db.refresh(user_searched)
+
+    def get_user_sessions(self, id:int):
+        user_sessions = self.db.query(TherapySessionModel).filter(TherapySessionModel.patient_id == id).all()
+
+        return user_sessions
 
     def change_password(self, id:int, actual_password:str, new_password:str):
         user = self.db.get(UserModel, id)

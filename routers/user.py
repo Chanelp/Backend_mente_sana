@@ -5,6 +5,7 @@ from fastapi.encoders import jsonable_encoder
 
 # Schemas
 from schemas.user import User
+from schemas.therapy_session import therapy_session
 
 # Services
 from services.user import UserService
@@ -135,5 +136,22 @@ async def change_password(request: Request, new_password:str, actual_password:st
     except CustomException as e:
         raise HTTPException(e.status_code, e.message)
     else:
-        
+        db.close()
         return JSONResponse({"message": "Contraseña cambiada correctamente"}, 200)
+    
+@user_router.get('/get_user_sessions/{id}', tags=['Users'], response_model=List[therapy_session], status_code=200)
+async def get_user_sessions(id:int):
+    try:
+        db = Session()
+        sessions = UserService(db).get_user_sessions(id)
+    except HTTPException as e:
+        raise HTTPException(status_code= 500, detail=str(e))
+
+    except SQLAlchemyError as e:
+        raise HTTPException(status_code = 400, detail = str(e))    
+    
+    except CustomException as e:
+        raise HTTPException(e.status_code, e.message)
+    else:
+        db.close()
+        return JSONResponse(jsonable_encoder(sessions), 200)
