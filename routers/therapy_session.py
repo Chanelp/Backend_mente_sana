@@ -24,10 +24,10 @@ TAGS = ['Therapy session']
 
 
 @therapy_router.get(path='/therapy_sessions/{id}', tags=TAGS, response_model=dict, status_code=200)
-async def get_sesion_by_therapist(id:int) -> dict:
+async def get_sesion_by_therapist() -> dict:
     try:
         db = Session()
-        sesiones = TherapySessionServices(db).getSessionsByTherapist(id)
+        sesiones = TherapySessionServices(db).getSessionsByTherapist()
     except HTTPException as e:
         raise HTTPException(status_code = 500, detail = str(e))
 
@@ -39,11 +39,7 @@ async def get_sesion_by_therapist(id:int) -> dict:
         return JSONResponse(content= jsonable_encoder(sesiones), status_code= 200)
     
 @therapy_router.post(path='/new-therapy', tags=TAGS, response_model=List[dict], status_code=200)
-async def create_therapy(therapy: therapy_session, request: Request) -> List[dict]:
-    payload = verify_JSON_web_token(request)
-    
-    if int(payload['sub']) != therapy.patient_id:
-        raise HTTPException(401, 'Acción no válida')
+async def create_therapy(therapy: therapy_session) -> dict:    
 
     try:
         db = Session()

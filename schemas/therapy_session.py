@@ -4,21 +4,25 @@ from datetime import datetime
 
 class therapy_session(BaseModel):
     id: Optional[int] = None
-    therapist_id: int 
-    session_date: datetime
-    session_note: Optional[str] = None
+    therapist_name: str 
+    session_date: str
+    session_time: str
+    selected_service: str
     patient_id: int
-    status_id:Optional[int] = 2
+    price: Optional[float] = None 
+    status_id:Optional[int] = 1
 
     createAt: Union[datetime, None] = datetime.now()
     
     model_config = {
         "json_schema_extra": {
             "examples": [{
-                "therapist_id": "Id del terapeuta de la session",
-                "session_date": "fecha de inicio (full DateTime con la hora)",
-                "session_note": "Nota de la sesion - (Description del usuario)",
-                "patient_id": "Id del paciente"
+                "therapist_name": "nombre del terapeuta de la session",
+                "session_date": "fecha de inicio (string)",
+                "session_time": "hora de la sesion",
+                "selected_service": "Servicio seleccionado",
+                "patient_id": "Id del paciente",
+                "price": "precio de la sesion"
             }]
         }
     }

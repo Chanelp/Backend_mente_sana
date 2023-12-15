@@ -1,6 +1,6 @@
 from config.database import Base, createAt
 # orm
-from sqlalchemy import Column, String, Integer, ForeignKey, DateTime
+from sqlalchemy import Column, String, Integer, ForeignKey, Float
 from sqlalchemy.orm import relationship
 
 
@@ -13,10 +13,12 @@ class TherapySessionModel(Base):
     __tablename__ = "therapy_session"
     
     id = Column(Integer, primary_key = True, autoincrement = True)
-    therapist_id = Column(Integer, ForeignKey(TherapistModel.id), nullable=False)
-    session_date = Column(DateTime, nullable=False)
-    session_note = Column(String, nullable=True)
+    therapist_name = Column(String, nullable=False)
+    session_date = Column(String, nullable=False)
+    session_time = Column(String, nullable=False)
+    selected_service = Column(String, nullable=False)
     patient_id = Column(Integer, ForeignKey(UserModel.id), nullable=False)
+    price = Column(Float, nullable=True)
     status_id = Column(Integer, ForeignKey(StatusesModel.id), nullable=False)
     
     createAt = createAt.copy()
