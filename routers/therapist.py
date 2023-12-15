@@ -27,7 +27,7 @@ TAGS = ['Therapists']
 therapist_router = APIRouter(prefix='/therapist')
 
     
-@therapist_router.get(path="/therapists/}", tags=TAGS, status_code=200, response_model=List[Therapist])
+@therapist_router.get(path="/therapists/{limit}", tags=TAGS, status_code=200, response_model=List[Therapist])
 def get_all_therapists(limit: int = 10):
     try:
         db = Session()
@@ -42,7 +42,6 @@ def get_all_therapists(limit: int = 10):
         return JSONResponse(content={"message": str(e)}, status_code=400)
 
     else:
-
         if not all_therapists:
             return JSONResponse(status_code=404, content={"message":"Terapeutas no encontrados"})
         

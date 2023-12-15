@@ -26,6 +26,8 @@ class UserService:
         new_user.password = bcrypt.hashpw(new_user.password.encode(), salt).decode()
         self.db.add(new_user)
         self.db.commit()
+        
+        self.db.close()
         return new_user
 
     def login_user(self, email:str, password:str) -> UserModel:
@@ -34,20 +36,26 @@ class UserService:
         if (not user_searched or not bcrypt.checkpw(password.encode(), user_searched.password.encode())):
             raise CustomException('Usuario o contraseña incorrecta', 401)
         
+        self.db.close()
         return user_searched
     
     def delete_user(self, id: int):
         deleted = self.db.query(UserModel).filter(UserModel.id == id).delete()
         self.db.commit()
 
+        self.db.close()
         return deleted
 
     def get_all_users(self):
         users = self.db.query(UserModel).all()
+        self.db.close()
+
         return users
     
     def get_user(self, id: int):
         user_searched = self.db.get(UserModel, id)
+        self.db.close()
+
         return user_searched
     
     def update_user_info(self, id:int, new_data: User):
@@ -63,6 +71,8 @@ class UserService:
         self.db.add(user_searched)
         self.db.commit()
         self.db.refresh(user_searched)
+        self.db.close()
+
 
     def change_password(self, id:int, actual_password:str, new_password:str):
         user = self.db.get(UserModel, id)
