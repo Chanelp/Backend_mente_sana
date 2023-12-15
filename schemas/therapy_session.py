@@ -2,14 +2,13 @@ from pydantic import BaseModel
 from typing import Optional, Union
 from datetime import datetime
 
-class therapy_model(BaseModel):
+class therapy_session(BaseModel):
     id: Optional[int] = None
     therapist_id: int 
-    start_date: datetime
-    session_duration: int # Duracion en minutos 
-    session_note: str
+    session_date: datetime
+    session_note: Optional[str]
     patient_id: int
-    status_id:int
+    status_id:Optional[int] = 2
 
     createAt: Union[datetime, None] = datetime.now()
     
@@ -17,10 +16,9 @@ class therapy_model(BaseModel):
         "json_schema_extra": {
             "examples": [{
                 "therapist_id": "Id del terapeuta de la session",
-                "start_date": "fecha de inicio (Con hora)",
-                "session_duration": "Duracion de la sesion (En minutos)",
-                "patient_id": "Id del paciente",
-                "status_id": "id del status de la sesion"
+                "session_date": "fecha de inicio (full DateTime con la hora)",
+                "session_note": "Nota de la sesion - (Description del usuario)",
+                "patient_id": "Id del paciente"
             }]
         }
     }

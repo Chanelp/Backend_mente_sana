@@ -67,3 +67,6 @@ class TherapistService:
 
     def verify_old_password(self, password:str, hashed_password:str) -> bool:
         return hasher.checkpw(password.encode(), hashed_password.encode())
+    
+    def get_active_therapists(self):
+        return self.db.query(TherapistModel).filter(TherapistModel.status_id == 1).all()

@@ -6,7 +6,7 @@ from utils.env import read_env_key
 
 SECRET = read_env_key('encrypt_pass')
 
-def verify_JSON_web_token(request: Request):
+def verify_JSON_web_token(request: Request, type:str = 'user'):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
@@ -15,6 +15,7 @@ def verify_JSON_web_token(request: Request):
     
     try:
         token = request.headers.get('authentication-token')
+        
 
         if token is None: 
             raise credentials_exception
@@ -22,6 +23,9 @@ def verify_JSON_web_token(request: Request):
         payload = decode(token, SECRET, algorithms=["HS256"])
 
         if payload is None:
+            raise credentials_exception
+        
+        if payload['type'] != type: 
             raise credentials_exception
     except PyJWKError:
         raise credentials_exception

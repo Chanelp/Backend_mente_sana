@@ -21,15 +21,16 @@ class StatusesModel(Base):
         try:
             db = Session()
             DEFAULT_STATUSES = [
-                ("Disponible", 1), # ID= 1
-                ("En espera", 2), # ID= 2
-                ("No disponible", 3), # ID= 3
+                ("Disponible"), # ID= 1
+                ("En espera",), # ID= 2
+                ("No disponible"), # ID = 3
+                ("Eliminado"), # ID = 4
+                ("En proceso"), # ID = 5
             ]
-            if db.query(self).count() != len(DEFAULT_STATUSES):
-                from sqlalchemy.sql import text as sa_text
-                db.execute(sa_text('''DELETE FROM statuses'''))
-                for defaulValue in DEFAULT_STATUSES:
-                    db.add(StatusesModel(defaulValue[0], id = defaulValue[1])) 
+            statuses_count = db.query(self).count()
+            if statuses_count < len(DEFAULT_STATUSES):
+                for index in range(statuses_count, len(DEFAULT_STATUSES)):
+                    db.add(StatusesModel(DEFAULT_STATUSES[index], id = index + 1)) 
                 db.commit()
         except:
             print('=== ERROR AL CREAR ESTADOS ===')

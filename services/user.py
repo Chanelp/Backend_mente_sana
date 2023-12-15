@@ -63,3 +63,8 @@ class UserService:
         self.db.add(user_searched)
         self.db.commit()
         self.db.refresh(user_searched)
+
+    def change_password(self, id:int, actual_password:str, new_password:str):
+        user = self.db.get(UserModel, id)
+
+        

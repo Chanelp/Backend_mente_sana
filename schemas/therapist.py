@@ -8,9 +8,9 @@ class Therapist(BaseModel):
     last_name: str
     email: str
     password: str
-    professional_description: str
-    specialty: str 
-    license: str
+    professional_description: Optional[str] = None
+    specialty: Optional[str] = None 
+    license: Optional[str] = None
     status_id: Optional[int] = 2
 
     model_config = {

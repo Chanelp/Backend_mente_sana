@@ -1,15 +1,30 @@
-from fastapi import APIRouter, HTTPException
+# Server
+from fastapi import APIRouter, HTTPException, Request
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
+
+# Services
 from services.therapy_session import TherapySessionServices
+
+# Config
 from config.database import Session
 from typing import List
 
-therapy_router = APIRouter()
+# Schemas
+from schemas.therapy_session import therapy_session
+
+# middlewares
+from middlewares.auth import verify_JSON_web_token
+
+from utils.customException import CustomException
+
+therapy_router = APIRouter(prefix='/therapy')
+
+TAGS = ['Therapy session']
 
 
-@therapy_router.post(path='/therapy_sessions/{id}', tags=['Therapy session'], response_model=dict, status_code=200)
-def get_sesion_by_therapist(id:int) -> dict:
+@therapy_router.post(path='/therapy_sessions/{id}', tags=TAGS, response_model=dict, status_code=200)
+async def get_sesion_by_therapist(id:int) -> dict:
     try:
         service = TherapySessionServices(Session())
         sesiones = service.getSessionsByTherapist(id)
@@ -21,3 +36,27 @@ def get_sesion_by_therapist(id:int) -> dict:
 
     else:
         return JSONResponse(content= jsonable_encoder(sesiones), status_code= 200)
+    
+@therapy_router.post(path='/new-therapy', tags=TAGS, response_model=List[dict], status_code=200)
+async def create_therapy(therapy: therapy_session, request: Request) -> List[dict]:
+    payload = verify_JSON_web_token(request)
+    
+    if int(payload['sub']) != therapy.patient_id:
+        raise HTTPException(401, 'Acción no válida')
+
+    try:
+        db = Session()
+        TherapySessionServices(db).createTherapy(therapy)
+    except HTTPException as e:
+        raise HTTPException(400, str(e))
+    
+    except CustomException as e:
+        raise HTTPException(e.status_code, e.message)
+    
+    else:
+        return JSONResponse({"message":"Solicitud de terapia enviada correctamente"}, 200)
+    
+@therapy_router.put('/accept_session', status_code=200, response_model=dict, tags=TAGS)
+async def accept_tharapy(request: Request, TherapyId:int):
+    # payload = 
+    pass

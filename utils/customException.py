@@ -1,8 +1,8 @@
 class CustomException(Exception):
-    def __init__(self, *args: object) -> None:
+    def __init__(self, message:str, status_code:int, *args) -> None:
         super().__init__(*args)
         
-        self.message = args[0] or ''
-        self.status_code = int(args[1]) or ''
+        self.message:str = message or ''
+        self.status_code:int = status_code or ''
 
         

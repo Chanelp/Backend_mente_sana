@@ -1,6 +1,9 @@
 from models.therapy_session import TherapySessionModel 
 from sqlalchemy.orm import Session 
 
+# Schemas
+from schemas.therapy_session import therapy_session
+
 class TherapySessionServices:
     def __init__(self, db:Session) -> None:
         self.db = db
@@ -14,3 +17,6 @@ class TherapySessionServices:
         else:
             return sesiones
         
+    def createTherapy(self, therapy:therapy_session):
+        new_therapy = TherapySessionModel(**therapy.model_dump())
+        self.db.add(new_therapy)

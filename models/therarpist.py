@@ -14,8 +14,8 @@ class TherapistModel(Base):
     password = Column(CHAR(60), nullable=False)
 
     professional_description = Column(String, nullable=True)
-    specialty = Column(String, nullable=False)
-    license = Column(String, nullable=False)
+    specialty = Column(String, nullable=True)
+    license = Column(String, nullable=True)
 
     status_id = Column(Integer, ForeignKey(StatusesModel.id))
     photo = Column(String, nullable=True)
